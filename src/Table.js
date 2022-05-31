@@ -36,6 +36,7 @@ export const Table = () => {
       setMessage('Values Fetched..')
     })
   .catch(error => {
+    setIsLoading(false)
     console.log(error)
     setMessage(error)
   });
