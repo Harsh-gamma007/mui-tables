@@ -55,6 +55,16 @@ export default function Table2() {
   };
 
   const table = (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="right">Id</TableCell>
+            <TableCell align="right">First Name</TableCell>
+            <TableCell align="right">Last Name</TableCell>
+            <TableCell align="right">Email</TableCell>
+          </TableRow>
+        </TableHead>
     <TableBody>
     {_DATA.currentData().map((row) => (
     <TableRow
@@ -71,24 +81,7 @@ export default function Table2() {
     </TableRow>
     ))}
     </TableBody>
-    )
-    
-  return (
-    <>
-    <div style={{ height: 400, minWidth: '580px' }}>
-    <button onClick={User} disabled={isLoading}>Show Data</button>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="right">Id</TableCell>
-            <TableCell align="right">First Name</TableCell>
-            <TableCell align="right">Last Name</TableCell>
-            <TableCell align="right">Email</TableCell>
-          </TableRow>
-        </TableHead>
-        {isLoading ? <Spinner/> : table}
-      </Table>
+    </Table>
       <Pagination
         count={count}
         size="large"
@@ -99,6 +92,15 @@ export default function Table2() {
       />
     </TableContainer>
     
+    )
+    
+  return (
+    <>
+    <div style={{ height: 400, minWidth: '580px' }}>
+    <button onClick={User} disabled={isLoading}>Show Data</button>
+    
+        {isLoading ? <Spinner/> : table}
+      
       </div>
       <Snackbar
         open={open}
