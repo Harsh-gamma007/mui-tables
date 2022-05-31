@@ -22,6 +22,7 @@ function App() {
         
       </nav>
       <Routes>
+        
         <Route path='/table' element={<Table/>}/>
         <Route path='/table2' element={<Table2/>}/>
       </Routes>
