@@ -6,43 +6,35 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-import DevPagination from './Pagination/Pagination';
+import DevPagination from './Pagination';
 import Pagination from '@mui/material/Pagination';
-
 import axios from 'axios';
 import Spinner from "./Spinner";
 import Snackbar from '@mui/material/Snackbar';
 
 export default function Table2() {
 
-  const [user, setUser] = useState([])
-  const [message, setMessage] = useState('')
-  const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = React.useState(1);
+  const [user, setUser] = useState({
+    data: [],
+    message:'',
+    open: false,
+    isLoading: false,
+  })
+  const [page, setPage] = useState(1);
   const PER_PAGE = 5;
-
   const User = () => {
-    setIsLoading(true);
-    axios.get(`https://jsonplaceholder.typicode.com/users`) //This is sending get request to json server
+    setUser((previousData) => ({...previousData, isLoading:true }))
+    axios.get(`https://jsonplaceholder.typicode.com/users`) 
     .then(data => {
-    const a = data.data
-    setUser(a)
-    setIsLoading(false)
-    setOpen(true)
-    setMessage('Values Fetched..')
+      const a = data.data
+      setUser((previousData) => ({...previousData, data:a, isLoading:false, open:true, message:'Values Fetched..'}))
     })
     .catch(error => {
-      console.log(error)
-      setMessage(error)
-    });
-    
-    }
-    
-  const count = Math.ceil(user.length / PER_PAGE);
-  const _DATA = DevPagination(user, PER_PAGE);
-
+      setUser((previousData) => ({...previousData, message:error }))
+    }); 
+  }  
+  const count = Math.ceil(user.data.length / PER_PAGE);
+  const _DATA = DevPagination(user.data, PER_PAGE);
   const handleChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
@@ -51,9 +43,8 @@ export default function Table2() {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setUser((previousData) => ({...previousData, open:false }))
   };
-
   const table = (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -65,22 +56,18 @@ export default function Table2() {
             <TableCell align="right">Email</TableCell>
           </TableRow>
         </TableHead>
-    <TableBody>
-    {_DATA.currentData().map((row) => (
-    <TableRow
-    key={row.id}
-    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-    >
-    
-    <TableCell align="right">{row.id}</TableCell>
-    <TableCell component="th" align="right" scope="row">
-    {row.name}
-    </TableCell>
-    <TableCell align="right">{row.username}</TableCell>
-    <TableCell align="right">{row.email}</TableCell>
-    </TableRow>
-    ))}
-    </TableBody>
+      <TableBody>
+        {_DATA.currentData().map((row) => (
+        <TableRow key={row.id}>
+          <TableCell align="right">{row.id}</TableCell>
+          <TableCell component="th" align="right" scope="row">
+          {row.name}
+          </TableCell>
+          <TableCell align="right">{row.username}</TableCell>
+          <TableCell align="right">{row.email}</TableCell>
+        </TableRow>
+        ))}
+      </TableBody>
     </Table>
       <Pagination
         count={count}
@@ -91,23 +78,19 @@ export default function Table2() {
         onChange={handleChange}
       />
     </TableContainer>
-    
     )
-    
   return (
     <>
-    <div style={{ height: 400, minWidth: '580px' }}>
-    <button onClick={User} disabled={isLoading}>Show Data</button>
-    
-        {isLoading ? <Spinner/> : table}
-      
+      <div style={{ height: 400, minWidth: '580px' }}>
+        <button onClick={User} disabled={user.isLoading}>Show Data</button>
+          {user.isLoading ? <Spinner/> : table}
       </div>
       <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        message={message}
+          open={user.open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          message={user.message}
       />
-      </>
+    </>
   );
 }
