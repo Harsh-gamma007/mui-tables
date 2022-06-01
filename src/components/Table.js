@@ -1,16 +1,16 @@
-import React, { useState }  from 'react';
+import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
-import Spinner from "./Spinner";
+import Spinner from "./spinner/Spinner";
 import Snackbar from '@mui/material/Snackbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers, closeSnackbar } from '../redux/actions/users';
 
 export const Table = () => {
-  const [user, setUser] = useState({
-    data: [],
-    message:'',
-    open: false,
-    isLoading: false,
-  })
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users.users);
+  const loading = useSelector(state => state.users.loading);
+  const message = useSelector(state => state.users.message);
+  const open = useSelector(state => state.users.open);
   const columns = [
     { field: 'id', headerName: 'ID', minWidth: 70 },
     { field: 'name', headerName: 'Name', minWidth: 130 },
@@ -21,22 +21,11 @@ export const Table = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setUser((previousData) => ({...previousData, open:false }))
+    dispatch(closeSnackbar())
   };
-  const User = () => {  
-    setUser((previousData) => ({...previousData, isLoading:true }))
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
-    .then(data => { 
-      const a = data.data
-      setUser((previousData) => ({...previousData, data:a, isLoading:false, open:true, message:'Values Fetched..'}))
-    })
-  .catch(error => {
-    setUser((previousData) => ({...previousData, message:error, isLoading:false }))
-  });
-  }
   const table = (
       <DataGrid
-        rows={user.data}
+        rows={users}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]} 
@@ -47,15 +36,21 @@ export const Table = () => {
       <div style={{ height: 400, width: '700' }}>
       <h1>Table using DataGrid</h1>
       <div style={{ height: 400, minWidth: '580px' }}>
-        <button onClick={User} disabled={user.isLoading}>Show Data</button>
-        {user.isLoading ? <Spinner/> : table}
+        <button onClick={
+          (e) => {
+            e.preventDefault()
+            // User()
+            dispatch(getUsers())
+          }
+          } disabled={loading}>Show Data</button>
+        {loading ? <Spinner/> : table}
       </div>
       </div>
       <Snackbar
-          open={user.open}
+          open={open}
           autoHideDuration={3000}
           onClose={handleClose}
-          message={user.message}
+          message= {message}
       />
     </>
   )

@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import DevPagination from './Pagination';
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
-import Spinner from "./Spinner";
+import Spinner from "./spinner/Spinner";
 import Snackbar from '@mui/material/Snackbar';
 
 export default function Table2() {

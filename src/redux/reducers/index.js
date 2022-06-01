@@ -1,9 +1,8 @@
-import reducer from './list'
-
 import { combineReducers } from '@reduxjs/toolkit'
+import users from './users'
 
 const rootReducers = combineReducers({
-  reducer,
+  users: users, 
 })
 
 export default rootReducers
