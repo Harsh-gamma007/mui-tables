@@ -2,23 +2,12 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   GET_USERS_SUCCESS,
   GET_USERS_FAILED, 
-  GET_USERS_REQUESTED } from "../../const";
-
-const url = 'https://jsonplaceholder.typicode.com/users';
-
-function getApi() {
-  return fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  }).then(response => response.json())
-  .catch((error) => {throw error})
-}
+  GET_USERS_REQUESTED } from "../actions/constant";
+import getUserDataService from '../services/user';
 
 function* fetchUsers(action) {
   try{
-    const users = yield call(getApi);
+    const users = yield call(getUserDataService);
     yield put({ type: GET_USERS_SUCCESS, users: users})
   }catch(e){
     yield put({type: GET_USERS_FAILED, message: e.message})

@@ -2,6 +2,7 @@ import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import { Table } from './components/Table';
 import Table2 from './components/Table2';
+import NoSuchPage from './components/NoSuchPage';
 
 function App() {
   return (
@@ -13,14 +14,15 @@ function App() {
               <li>
                 <Link to="/table">Table</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/table2">Table2</Link>
-              </li>  
+              </li>   */}
             </ul>
           </nav>
           <Routes>
+            <Route path='/' element={<NoSuchPage/>}/>
             <Route path='/table' element={<Table/>}/>
-            <Route path='/table2' element={<Table2/>}/>
+            {/* <Route path='/table2' element={<Table2/>}/> */}
           </Routes>
       </Router>
     <br/>

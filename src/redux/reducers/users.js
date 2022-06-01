@@ -3,7 +3,7 @@ import {
   GET_USERS_FAILED, 
   GET_USERS_REQUESTED,
   CLOSE_SNACKBAR,
- } from "../../const";
+ } from "../actions/constant";
 
 const initialStates = {
   users: [],

@@ -1,6 +1,6 @@
 import {
   CLOSE_SNACKBAR,
-  GET_USERS_REQUESTED } from "../../const";
+  GET_USERS_REQUESTED } from "./constant";
 
 export function getUsers() {
   return {
