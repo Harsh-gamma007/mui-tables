@@ -14,15 +14,15 @@ function App() {
               <li>
                 <Link to="/table">Table</Link>
               </li>
-              {/* <li>
+              <li>
                 <Link to="/table2">Table2</Link>
-              </li>   */}
+              </li>  
             </ul>
           </nav>
           <Routes>
             <Route path='/' element={<NoSuchPage/>}/>
             <Route path='/table' element={<Table/>}/>
-            {/* <Route path='/table2' element={<Table2/>}/> */}
+            <Route path='/table2' element={<Table2/>}/>
           </Routes>
       </Router>
     <br/>

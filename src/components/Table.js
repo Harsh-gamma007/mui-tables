@@ -39,7 +39,6 @@ export const Table = () => {
         <button onClick={
           (e) => {
             e.preventDefault()
-            // User()
             dispatch(getUsers())
           }
           } disabled={loading}>Show Data</button>

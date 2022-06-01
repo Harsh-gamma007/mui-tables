@@ -8,33 +8,21 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DevPagination from './Pagination';
 import Pagination from '@mui/material/Pagination';
-import axios from 'axios';
 import Spinner from "./spinner/Spinner";
 import Snackbar from '@mui/material/Snackbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers, closeSnackbar } from '../redux/actions/users';
 
 export default function Table2() {
-
-  const [user, setUser] = useState({
-    data: [],
-    message:'',
-    open: false,
-    isLoading: false,
-  })
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users.users);
+  const loading = useSelector(state => state.users.loading);
+  const message = useSelector(state => state.users.message);
+  const open = useSelector(state => state.users.open);
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
-  const User = () => {
-    setUser((previousData) => ({...previousData, isLoading:true }))
-    axios.get(`https://jsonplaceholder.typicode.com/users`) 
-    .then(data => {
-      const a = data.data
-      setUser((previousData) => ({...previousData, data:a, isLoading:false, open:true, message:'Values Fetched..'}))
-    })
-    .catch(error => {
-      setUser((previousData) => ({...previousData, message:error }))
-    }); 
-  }  
-  const count = Math.ceil(user.data.length / PER_PAGE);
-  const _DATA = DevPagination(user.data, PER_PAGE);
+  const count = Math.ceil(users.length / PER_PAGE);
+  const _DATA = DevPagination(users, PER_PAGE);
   const handleChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
@@ -43,7 +31,7 @@ export default function Table2() {
     if (reason === 'clickaway') {
       return;
     }
-    setUser((previousData) => ({...previousData, open:false }))
+    dispatch(closeSnackbar())
   };
   const table = (
     <TableContainer component={Paper}>
@@ -82,14 +70,19 @@ export default function Table2() {
   return (
     <>
       <div style={{ height: 400, minWidth: '580px' }}>
-        <button onClick={User} disabled={user.isLoading}>Show Data</button>
-          {user.isLoading ? <Spinner/> : table}
+        <button onClick={
+          (e) => {
+            e.preventDefault()
+            dispatch(getUsers())
+          }
+        } disabled={loading}>Show Data</button>
+          {loading ? <Spinner/> : table}
       </div>
       <Snackbar
-          open={user.open}
+          open={open}
           autoHideDuration={3000}
           onClose={handleClose}
-          message={user.message}
+          message={message}
       />
     </>
   );
