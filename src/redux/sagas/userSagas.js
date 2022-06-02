@@ -6,13 +6,14 @@ import {
 import getUserDataService from '../services/user';
 
 function* fetchUsers(action) {
-  try{
+  try {
     const users = yield call(getUserDataService);
     yield put({ type: GET_USERS_SUCCESS, users: users})
-  }catch(e){
+  } catch(e) {
     yield put({type: GET_USERS_FAILED, message: e.message})
   }
 }
+
 function* userSaga() {
   yield takeEvery(GET_USERS_REQUESTED, fetchUsers)
 }

@@ -11,6 +11,7 @@ const initialStates = {
   message: '',
   open: false,
 }
+
 const users = (state = initialStates, action) => {
   switch(action.type) {
     case GET_USERS_REQUESTED:
@@ -18,28 +19,33 @@ const users = (state = initialStates, action) => {
         ...state,
         loading: true,
       }
+
     case GET_USERS_SUCCESS:
-      return{
+      return {
         ...state,
         loading: false,
         users: action.users,
         message: 'Values Fetched!!',
         open: true
       }
+
     case GET_USERS_FAILED:
-      return{
-          ...state,
-          loading: false,
-          message: action.message,
-          open: true
-        }
+      return {
+        ...state,
+        loading: false,
+        message: action.message,
+        open: true
+      }
+
     case CLOSE_SNACKBAR:
-      return{
+      return {
         ...state,
         open:false
       }
+
     default:
       return state
   }
 }
+
 export default users

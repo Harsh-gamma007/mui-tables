@@ -2,8 +2,9 @@ import React from 'react'
 
 const NoSuchPage = () => {
   return (
-    <div>NoSuchPage</div>
-    
+    <div>
+      NoSuchPage
+    </div>
   )
 }
 

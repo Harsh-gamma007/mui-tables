@@ -23,16 +23,19 @@ export default function Table2() {
   const PER_PAGE = 5;
   const count = Math.ceil(users.length / PER_PAGE);
   const _DATA = DevPagination(users, PER_PAGE);
+
   const handleChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
   };
+
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     dispatch(closeSnackbar())
   };
+  
   const table = (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -67,6 +70,7 @@ export default function Table2() {
       />
     </TableContainer>
     )
+    
   return (
     <>
       <div style={{ height: 400, minWidth: '580px' }}>
