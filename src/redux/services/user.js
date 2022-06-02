@@ -1,7 +1,5 @@
-const url = 'https://jsonplaceholder.typicode.com/users';
-
 function getUserDataService() {
-  return fetch(url, {
+  return fetch(process.env.REACT_APP_USER_API , {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
